@@ -43,6 +43,8 @@ def add_item(title):
     items = get_items()
 
     # Determine the ID for the item based on that of the previously added item
+    # Note: Inconsistent behaviour for ID generation. Should every item have a unique ID,
+    #       or should a new item get the first available ID? A question for another time.
     id = items[-1]['id'] + 1 if items else 0
 
     item = { 'id': id, 'title': title, 'status': 'Not Started' }
@@ -67,3 +69,17 @@ def save_item(item):
     session['items'] = updated_items
 
     return item
+
+def delete_item(id):
+    """
+    Deletes and existing item in the session. If no existing item matches the ID of the specified item, nothing is deleted.
+
+    Args:
+        id: The ID of the item to delete.
+    """
+    items = get_items()
+    for pos, item in enumerate(items):
+        if item['id'] == int(id):
+            items.pop(pos)
+
+    session['items'] = items

@@ -23,8 +23,18 @@
       <label for="title">Item title: </label>
       <input type="text" name="title" id="title" required>
     </div>
-    <div class="form-example">
+    <div class="new-item-form">
       <input type="submit" value="Create">
+    </div>
+  </form>
+
+  <form action="/removeItem" method="post" class="delete-item-form">
+    <div class="delete-item-form">
+      <label for="itemID">Item ID: </label>
+      <input type="number" name="itemID" id="itemID" required>
+    </div>
+    <div class="delete-item-form">
+      <input type="submit" value="Delete">
     </div>
   </form>
 {% endblock %}

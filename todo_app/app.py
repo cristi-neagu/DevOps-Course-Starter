@@ -19,3 +19,9 @@ def addItem():
     '''Add a new item to the list'''
     session_items.add_item(request.form.get('title'))
     return redirect(url_for('index'))
+
+@app.route('/removeItem', methods=['post'])
+def removeItem():
+    '''Remove an item based on ID'''
+    session_items.delete_item(request.form.get('itemID'))
+    return redirect(url_for('index'))
