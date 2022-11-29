@@ -2,6 +2,15 @@
 {% block title %}To-Do App{% endblock %}
 
 {% block content %}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      {{ message }}
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
   <div class="jumbotron">
     <h1 class="display-4">To-Do App</h1>
     <p class="lead">Just another to-do app.</p>
@@ -18,23 +27,19 @@
     </div>
   </div>
 
-  <form action="/addItem" method="post" class="new-item-form">
-    <div class="new-item-form">
-      <label for="title">Item title: </label>
-      <input type="text" name="title" id="title" required>
+  <form action="/changeItem" method="post" class="change-item-form">
+    <div class="change-item-form">
+      <label for="itemId">ID: </label>
+      <input type="numeric" name="itemID" id="itemID" size="1" value="{{setID}}">
+      <label for="isStarted">Started: </label>
+      <input type="checkbox" name="isStarted" id="isStarted" {{"checked" if setStart}}>
+      <label for="itemTitle">Title: </label>
+      <input type="text" name="itemTitle" id="itemTitle" size="50" value="{{setTitle}}">
     </div>
-    <div class="new-item-form">
-      <input type="submit" value="Create">
-    </div>
-  </form>
-
-  <form action="/removeItem" method="post" class="delete-item-form">
-    <div class="delete-item-form">
-      <label for="itemID">Item ID: </label>
-      <input type="number" name="itemID" id="itemID" required>
-    </div>
-    <div class="delete-item-form">
-      <input type="submit" value="Delete">
+    <div class="change-item-form">
+      <input type="submit" name="changeItem" value="Save Item">
+      <input type="submit" name="changeItem" value="Delete Item">
+      <input type="submit" name="changeItem" value="Get Item">
     </div>
   </form>
 {% endblock %}
