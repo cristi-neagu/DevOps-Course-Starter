@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template
+from flask import render_template, redirect, url_for
 from flask import request
 
 from todo_app.flask_config import Config
@@ -18,4 +18,4 @@ def index():
 def addItem():
     '''Add a new item to the list'''
     session_items.add_item(request.form.get('title'))
-    return render_template(r'index.html', items=session_items.get_items())
+    return redirect(url_for('index'))
