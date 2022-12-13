@@ -2,6 +2,15 @@
 {% block title %}To-Do App{% endblock %}
 
 {% block content %}
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      {{ message }}
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
   <div class="jumbotron">
     <h1 class="display-4">To-Do App</h1>
     <p class="lead">Just another to-do app.</p>
@@ -11,8 +20,26 @@
     <div class="col-md-12">
       <h2>Items</h2>
       <ul class="list-group mb-4">
-        <!-- List the todo items here -->
+        {% for item in items %}
+          <li>{{item.id}} - {{item.status}} - {{item.title}}</li>
+        {% endfor %}
       </ul>
     </div>
   </div>
+
+  <form action="/changeItem" method="post" class="change-item-form">
+    <div class="change-item-form">
+      <label for="itemId">ID: </label>
+      <input type="numeric" name="itemID" id="itemID" size="1" value="{{setID}}">
+      <label for="isStarted">Started: </label>
+      <input type="checkbox" name="isStarted" id="isStarted" {{"checked" if setStart}}>
+      <label for="itemTitle">Title: </label>
+      <input type="text" name="itemTitle" id="itemTitle" size="50" value="{{setTitle}}">
+    </div>
+    <div class="change-item-form">
+      <input type="submit" name="changeItem" value="Save Item">
+      <input type="submit" name="changeItem" value="Delete Item">
+      <input type="submit" name="changeItem" value="Get Item">
+    </div>
+  </form>
 {% endblock %}
