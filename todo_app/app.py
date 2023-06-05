@@ -25,7 +25,7 @@ def changeItem():
         if itemTitle == "":
             flash('ERROR: No title specified for new item')
         else:
-            session_items.add_item(itemTitle)
+            trello_items.add_item(itemTitle)
 
     if reqAction == 'Delete Item':
         itemID = request.form.get('itemID')
@@ -49,7 +49,7 @@ def changeItem():
         itemID = request.form.get('itemID')
         if itemID == "":
             itemTitle = request.form.get('itemTitle')
-            session_items.add_item(itemTitle)
+            trello_items.add_item(itemTitle)
         else:
             items = trello_items.get_items()
             itemStart = request.form.get('isStarted') is not None
@@ -61,6 +61,6 @@ def changeItem():
                     session_items.save_item(item)
                     break
             else:
-                session_items.add_item(itemTitle)
+                trello_items.add_item(itemTitle)
 
     return redirect(url_for('index'))
