@@ -1,6 +1,7 @@
 import os
 import json
 import requests
+from todo_app.data.ToDoItem import TDItem
 
 def getItems():
     """
@@ -21,12 +22,10 @@ def getItems():
     # For now let's just add all items sorted according to status and then by ID
     # If needed, we can sort by ID later
     for cList in lists:
-        if cList['name'] == 'To Do':
-            for card in cList['cards']:
-                items.append({'id': card['idShort'], 'status': 'Not Started', 'title': card['name']})
-        if cList['name'] == 'Doing':
-            for card in cList['cards']:
-                items.append({'id': card['idShort'], 'status': 'Started', 'title': card['name']})
+        if cList['name'] not in ['To Do', 'Doing']:
+            continue
+        for card in cList['cards']:
+            items.append({'id': card['idShort'], 'status': cList['name'], 'title': card['name']})
 
     return items
 
@@ -62,7 +61,7 @@ def addItem(title):
     lists = {entry['name']: entry['id'] for entry in json.loads(response.text)}
 
     # Now add the new item to the To Do list
-    # Can also check in the future if the item is Started, and choose the appropriate list
+    # Can also check in the future if the item is Doing, and choose the appropriate list
     url = "https://api.trello.com/1/cards"
 
     headers = {"Accept": "application/json"}
@@ -72,7 +71,7 @@ def addItem(title):
     response = requests.request("POST", url, headers=headers, params=query, timeout=10)
     newCard = json.loads(response.text)
 
-    return {'id': newCard['id'], 'status': 'Not Started', 'title': newCard['name']}
+    return {'id': newCard['id'], 'status': 'To Do', 'title': newCard['name']}
 
 def saveItem(item):
     """
@@ -104,7 +103,7 @@ def saveItem(item):
     url = f'https://api.trello.com/1/cards/{cardID}'
     headers = {"Accept": "application/json"}
     query = {'name': item['title'], 'key': os.environ.get("TRELLO_KEY"), 'token': os.environ.get("TRELLO_TOKEN")}
-    query['idList'] = listIDs['Doing'] if item['status'] == 'Started' else listIDs['To Do']
+    query['idList'] = listIDs['Doing'] if item['status'] == 'Doing' else listIDs['To Do']
 
     response = requests.request("PUT", url, headers=headers, params=query, timeout=10)
     return item

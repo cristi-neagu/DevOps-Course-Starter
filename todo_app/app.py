@@ -39,7 +39,7 @@ def changeItem():
             flash('ERROR: No ID specified for item to be retrieved')
         else:
             item = trello_items.getItem(itemID)
-            itemStart = item['status'] == 'Started'
+            itemStart = item['status'] == 'Doing'
             itemTitle = item['title']
             return render_template('index.html', items=trello_items.getItems(),
                                     setID=itemID, setStart=itemStart, setTitle=itemTitle)
@@ -56,7 +56,7 @@ def changeItem():
             for item in items:
                 if item['id'] == int(itemID):
                     item['title'] = itemTitle
-                    item['status'] = 'Started' if itemStart else 'Not started'
+                    item['status'] = 'Doing' if itemStart else 'To Do'
                     trello_items.saveItem(item)
                     break
             else:
