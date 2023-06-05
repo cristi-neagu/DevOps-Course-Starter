@@ -62,4 +62,11 @@ def changeItem():
             else:
                 trello_items.add_item(itemTitle)
 
+    if reqAction == "Complete Item":
+        itemID = request.form.get('itemID')
+        if itemID == "":
+            flash('ERROR: No ID specified for item to be marked as complete')
+        else:
+            trello_items.complete_item(itemID)
+
     return redirect(url_for('index'))

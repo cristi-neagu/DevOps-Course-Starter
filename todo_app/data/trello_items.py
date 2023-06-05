@@ -141,3 +141,37 @@ def delete_item(itemID):
 
     response = requests.request("DELETE", url, headers=headers, params=query, timeout=10)
     print('done')
+
+def complete_item(itemID):
+    """
+    Marks an item as complete and moves it to the Done list. If no existing item matches the ID of the specified item, nothing is deleted.
+
+    Args:
+        id: The ID of the item to mark as complete.
+    """
+    url = f'https://api.trello.com/1/boards/{os.environ.get("TRELLO_BOARD")}/lists'
+    headers = {"Accept": "application/json"}
+    query = {'cards': 'open', 'key': os.environ.get("TRELLO_KEY"), 'token': os.environ.get("TRELLO_TOKEN")}
+
+    response = requests.request("GET", url, headers=headers, params=query, timeout=10)
+
+    lists = json.loads(response.text)
+    listIDs = {entry['name']: entry['id'] for entry in lists}
+    cards = []
+    for cList in lists:
+        for card in cList['cards']:
+            cards.append(card)
+    cardID = -1
+    for card in cards:
+        if card['idShort'] == int(itemID):
+            cardID = card['id']
+
+    if cardID == -1:
+        return
+
+    url = f'https://api.trello.com/1/cards/{cardID}'
+    headers = {"Accept": "application/json"}
+    query = {'idList': listIDs['Done'], 'key': os.environ.get("TRELLO_KEY"), 'token': os.environ.get("TRELLO_TOKEN")}
+
+    response = requests.request("PUT", url, headers=headers, params=query, timeout=10)
+    return itemID
