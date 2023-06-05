@@ -3,7 +3,6 @@ from flask import render_template, redirect, url_for, flash
 from flask import request
 
 from todo_app.flask_config import Config
-import todo_app.data.session_items as session_items
 import todo_app.data.trello_items as trello_items
 
 app = Flask(__name__)
@@ -32,7 +31,7 @@ def changeItem():
         if itemID == "":
             flash('ERROR: No ID specified for item to be deleted')
         else:
-            session_items.delete_item(itemID)
+            trello_items.delete_item(itemID)
 
     if reqAction == 'Get Item':
         itemID = request.form.get('itemID')
