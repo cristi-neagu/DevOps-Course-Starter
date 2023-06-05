@@ -71,7 +71,7 @@ def addItem(title):
     response = requests.request("POST", url, headers=headers, params=query, timeout=10)
     newCard = json.loads(response.text)
 
-    return TDItem(newCard['id'], 'To Do', newCard['name'])
+    return {'id': newCard['id'], 'status': 'To Do', 'title': newCard['name']}
 
 def saveItem(item):
     """
