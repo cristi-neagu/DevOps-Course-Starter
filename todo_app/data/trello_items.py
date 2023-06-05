@@ -46,3 +46,32 @@ def add_item(title):
     newCard = json.loads(response.text)
 
     return {'id': newCard['id'], 'status': 'Not Started', 'title': newCard['name']}
+
+def save_item(item):
+    url = f'https://api.trello.com/1/boards/{os.environ.get("TRELLO_BOARD")}/lists'
+    headers = {"Accept": "application/json"}
+    query = {'cards': 'open', 'key': os.environ.get("TRELLO_KEY"), 'token': os.environ.get("TRELLO_TOKEN")}
+
+    response = requests.request("GET", url, headers=headers, params=query, timeout=10)
+
+    lists = json.loads(response.text)
+    listIDs = {entry['name']: entry['id'] for entry in lists}
+    cards = []
+    for cList in lists:
+        for card in cList['cards']:
+            cards.append(card)
+    cardID = -1
+    for card in cards:
+        if card['idShort'] == item['id']:
+            cardID = card['id']
+
+    if cardID == -1:
+        return item
+
+    url = f'https://api.trello.com/1/cards/{cardID}'
+    headers = {"Accept": "application/json"}
+    query = {'name': item['title'], 'key': os.environ.get("TRELLO_KEY"), 'token': os.environ.get("TRELLO_TOKEN")}
+    query['idList'] = listIDs['Doing'] if item['status'] == 'Started' else listIDs['To Do']
+
+    response = requests.request("PUT", url, headers=headers, params=query, timeout=10)
+    return item

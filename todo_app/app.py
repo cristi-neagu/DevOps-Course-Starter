@@ -58,7 +58,7 @@ def changeItem():
                 if item['id'] == int(itemID):
                     item['title'] = itemTitle
                     item['status'] = 'Started' if itemStart else 'Not started'
-                    session_items.save_item(item)
+                    trello_items.save_item(item)
                     break
             else:
                 trello_items.add_item(itemTitle)
