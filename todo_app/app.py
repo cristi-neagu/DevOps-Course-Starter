@@ -4,6 +4,7 @@ from flask import request
 
 from todo_app.flask_config import Config
 import todo_app.data.session_items as session_items
+import todo_app.data.trello_items as trello_items
 
 app = Flask(__name__)
 app.config.from_object(Config())
@@ -12,7 +13,7 @@ app.config.from_object(Config())
 @app.route('/')
 def index():
     '''Main page'''
-    return render_template('index.html', items=session_items.get_items())
+    return render_template('index.html', items=trello_items.get_items())
 
 @app.route('/changeItem', methods=['POST'])
 def changeItem():
@@ -41,7 +42,7 @@ def changeItem():
             item = session_items.get_item(itemID)
             itemStart = item['status'] == 'Started'
             itemTitle = item['title']
-            return render_template('index.html', items=session_items.get_items(),
+            return render_template('index.html', items=trello_items.get_items(),
                                     setID=itemID, setStart=itemStart, setTitle=itemTitle)
 
     if reqAction == "Save Item":
@@ -50,7 +51,7 @@ def changeItem():
             itemTitle = request.form.get('itemTitle')
             session_items.add_item(itemTitle)
         else:
-            items = session_items.get_items()
+            items = trello_items.get_items()
             itemStart = request.form.get('isStarted') is not None
             itemTitle = request.form.get('itemTitle')
             for item in items:
