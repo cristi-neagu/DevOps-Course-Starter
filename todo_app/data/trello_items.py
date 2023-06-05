@@ -25,7 +25,7 @@ def getItems():
         if cList['name'] not in ['To Do', 'Doing']:
             continue
         for card in cList['cards']:
-            items.append({'id': card['idShort'], 'status': cList['name'], 'title': card['name']})
+            items.append(TDItem.fromTrelloCards(card, cList))
 
     return items
 
@@ -40,7 +40,7 @@ def getItem(itemID):
         item: The saved item, or None if no items match the specified ID.
     """
     items = getItems()
-    return next((item for item in items if item['id'] == int(itemID)), None)
+    return next((item for item in items if item.id == int(itemID)), None)
 
 def addItem(title):
     """
@@ -71,7 +71,7 @@ def addItem(title):
     response = requests.request("POST", url, headers=headers, params=query, timeout=10)
     newCard = json.loads(response.text)
 
-    return {'id': newCard['id'], 'status': 'To Do', 'title': newCard['name']}
+    return TDItem('id': newCard['id'], 'To Do', newCard['name'])
 
 def saveItem(item):
     """
@@ -94,7 +94,7 @@ def saveItem(item):
             cards.append(card)
     cardID = -1
     for card in cards:
-        if card['idShort'] == item['id']:
+        if card['idShort'] == item.id:
             cardID = card['id']
 
     if cardID == -1:
@@ -102,8 +102,8 @@ def saveItem(item):
 
     url = f'https://api.trello.com/1/cards/{cardID}'
     headers = {"Accept": "application/json"}
-    query = {'name': item['title'], 'key': os.environ.get("TRELLO_KEY"), 'token': os.environ.get("TRELLO_TOKEN")}
-    query['idList'] = listIDs['Doing'] if item['status'] == 'Doing' else listIDs['To Do']
+    query = {'name': item.name, 'key': os.environ.get("TRELLO_KEY"), 'token': os.environ.get("TRELLO_TOKEN")}
+    query['idList'] = listIDs['Doing'] if item.status == 'Doing' else listIDs['To Do']
 
     response = requests.request("PUT", url, headers=headers, params=query, timeout=10)
     return item
