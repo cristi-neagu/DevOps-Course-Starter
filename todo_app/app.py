@@ -54,9 +54,9 @@ def changeItem():
             itemStart = request.form.get('isStarted') is not None
             itemTitle = request.form.get('itemTitle')
             for item in items:
-                if item['id'] == int(itemID):
-                    item['title'] = itemTitle
-                    item['status'] = 'Doing' if itemStart else 'To Do'
+                if item.id == int(itemID):
+                    item.name = itemTitle
+                    item.status = 'Doing' if itemStart else 'To Do'
                     trello_items.saveItem(item)
                     break
             else:
