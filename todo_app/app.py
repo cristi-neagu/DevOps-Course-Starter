@@ -12,7 +12,7 @@ app.config.from_object(Config())
 @app.route('/')
 def index():
     '''Main page'''
-    return render_template('index.html', items=trello_items.get_items())
+    return render_template('index.html', items=trello_items.getItems())
 
 @app.route('/changeItem', methods=['POST'])
 def changeItem():
@@ -24,49 +24,49 @@ def changeItem():
         if itemTitle == "":
             flash('ERROR: No title specified for new item')
         else:
-            trello_items.add_item(itemTitle)
+            trello_items.addItem(itemTitle)
 
     if reqAction == 'Delete Item':
         itemID = request.form.get('itemID')
         if itemID == "":
             flash('ERROR: No ID specified for item to be deleted')
         else:
-            trello_items.delete_item(itemID)
+            trello_items.deleteItem(itemID)
 
     if reqAction == 'Get Item':
         itemID = request.form.get('itemID')
         if itemID == "":
             flash('ERROR: No ID specified for item to be retrieved')
         else:
-            item = trello_items.get_item(itemID)
+            item = trello_items.getItem(itemID)
             itemStart = item['status'] == 'Started'
             itemTitle = item['title']
-            return render_template('index.html', items=trello_items.get_items(),
+            return render_template('index.html', items=trello_items.getItems(),
                                     setID=itemID, setStart=itemStart, setTitle=itemTitle)
 
     if reqAction == "Save Item":
         itemID = request.form.get('itemID')
         if itemID == "":
             itemTitle = request.form.get('itemTitle')
-            trello_items.add_item(itemTitle)
+            trello_items.addItem(itemTitle)
         else:
-            items = trello_items.get_items()
+            items = trello_items.getItems()
             itemStart = request.form.get('isStarted') is not None
             itemTitle = request.form.get('itemTitle')
             for item in items:
                 if item['id'] == int(itemID):
                     item['title'] = itemTitle
                     item['status'] = 'Started' if itemStart else 'Not started'
-                    trello_items.save_item(item)
+                    trello_items.saveItem(item)
                     break
             else:
-                trello_items.add_item(itemTitle)
+                trello_items.addItem(itemTitle)
 
     if reqAction == "Complete Item":
         itemID = request.form.get('itemID')
         if itemID == "":
             flash('ERROR: No ID specified for item to be marked as complete')
         else:
-            trello_items.complete_item(itemID)
+            trello_items.completeItem(itemID)
 
     return redirect(url_for('index'))

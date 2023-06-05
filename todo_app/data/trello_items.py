@@ -2,7 +2,7 @@ import os
 import json
 import requests
 
-def get_items():
+def getItems():
     """
     Fetches all saved items from the session.
 
@@ -30,7 +30,7 @@ def get_items():
 
     return items
 
-def get_item(itemID):
+def getItem(itemID):
     """
     Fetches the saved item with the specified ID.
 
@@ -40,10 +40,10 @@ def get_item(itemID):
     Returns:
         item: The saved item, or None if no items match the specified ID.
     """
-    items = get_items()
+    items = getItems()
     return next((item for item in items if item['id'] == int(itemID)), None)
 
-def add_item(title):
+def addItem(title):
     """
     Adds a new item with the specified title to the session.
 
@@ -74,7 +74,7 @@ def add_item(title):
 
     return {'id': newCard['id'], 'status': 'Not Started', 'title': newCard['name']}
 
-def save_item(item):
+def saveItem(item):
     """
     Updates an existing item in the session. If no existing item matches the ID of the specified item, nothing is saved.
 
@@ -109,7 +109,7 @@ def save_item(item):
     response = requests.request("PUT", url, headers=headers, params=query, timeout=10)
     return item
 
-def delete_item(itemID):
+def deleteItem(itemID):
     """
     Deletes and existing item in the session. If no existing item matches the ID of the specified item, nothing is deleted.
 
@@ -142,7 +142,7 @@ def delete_item(itemID):
     response = requests.request("DELETE", url, headers=headers, params=query, timeout=10)
     print('done')
 
-def complete_item(itemID):
+def completeItem(itemID):
     """
     Marks an item as complete and moves it to the Done list. If no existing item matches the ID of the specified item, nothing is deleted.
 
