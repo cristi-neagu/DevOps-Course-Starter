@@ -39,7 +39,7 @@ def changeItem():
         if itemID == "":
             flash('ERROR: No ID specified for item to be retrieved')
         else:
-            item = session_items.get_item(itemID)
+            item = trello_items.get_item(itemID)
             itemStart = item['status'] == 'Started'
             itemTitle = item['title']
             return render_template('index.html', items=trello_items.get_items(),

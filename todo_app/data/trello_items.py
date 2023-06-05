@@ -21,3 +21,7 @@ def get_items():
                 items.append({'id': card['idShort'], 'status': 'Started', 'title': card['name']})
 
     return items
+
+def get_item(id):
+    items = get_items()
+    return next((item for item in items if item['id'] == int(id)), None)
