@@ -21,7 +21,7 @@
       <h2>Items</h2>
       <ul class="list-group mb-4">
         {% for item in items %}
-          <li>{{item.id}} - {{item.status}} - {{item.title}}</li>
+          <li>{{item.id}} - {{item.status}} - {{item.name}}</li>
         {% endfor %}
       </ul>
     </div>
@@ -38,6 +38,7 @@
     </div>
     <div class="change-item-form">
       <input type="submit" name="changeItem" value="Save Item">
+      <input type="submit" name="changeItem" value="Complete Item">
       <input type="submit" name="changeItem" value="Delete Item">
       <input type="submit" name="changeItem" value="Get Item">
     </div>
