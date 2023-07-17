@@ -54,3 +54,13 @@ You should see output similar to the following:
  * Debugger PIN: 226-556-590
 ```
 Now visit [`http://localhost:5000/`](http://localhost:5000/) in your web browser to view the app.
+
+## Running tests
+
+The test suite is developed using `pytest`. Make sure dev dependencies are installed when initializing Poetry.
+
+Simplest method of running tests is through VS Code, by using the `Test explorer UI` estension. Alternatively, tests can be run from the command line:
+
+```
+$ pytest
+```
