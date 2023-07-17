@@ -8,4 +8,4 @@ class ViewModel:
 
     @property
     def doingItems(self):
-        return []
+        return [item for item in self._items if item.status == 'Doing']
