@@ -4,6 +4,7 @@ from flask import request
 
 from todo_app.flask_config import Config
 import todo_app.data.trello_items as trello_items
+from todo_app.data.ViewModel import ViewModel
 
 app = Flask(__name__)
 app.config.from_object(Config())
@@ -12,7 +13,8 @@ app.config.from_object(Config())
 @app.route('/')
 def index():
     '''Main page'''
-    return render_template('index.html', items=trello_items.getItems())
+    itemViewModel = ViewModel(trello_items.getItems())
+    return render_template('index.html', viewModel=itemViewModel)
 
 @app.route('/changeItem', methods=['POST'])
 def changeItem():
