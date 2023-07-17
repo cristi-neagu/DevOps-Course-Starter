@@ -5,3 +5,7 @@ class ViewModel:
     @property
     def items(self):
         return self._items
+
+    @property
+    def doingItems(self):
+        return []
