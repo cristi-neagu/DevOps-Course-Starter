@@ -33,9 +33,7 @@ class StubResponse():
         return self.fakeResponseData
 
 def stub(reqType, url, **kwargs):
-    # Not sure why this isn't working...
-    # test_board_id = os.environ.get('TRELLO_BOARD_ID')
-    testBoardID = 'TestTrelloBoard'
+    testBoardID = os.environ.get('TRELLO_BOARD')
     if url == f'https://api.trello.com/1/boards/{testBoardID}/lists':
         fakeResponseData = [{
             'id': '123abc',
