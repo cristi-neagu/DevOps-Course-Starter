@@ -62,5 +62,5 @@ The test suite is developed using `pytest`. Make sure dev dependencies are insta
 Simplest method of running tests is through VS Code, by using the `Test explorer UI` estension. Alternatively, tests can be run from the command line:
 
 ```
-$ pytest
+$ poetry run pytest
 ```
