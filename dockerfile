@@ -6,3 +6,5 @@ RUN poetry install
 
 EXPOSE 5000
 COPY todo_app todo_app
+
+ENTRYPOINT ["poetry", "run", "flask", "run", "-h", "0.0.0.0", "-p", "5000"]
