@@ -64,3 +64,11 @@ Simplest method of running tests is through VS Code, by using the `Test explorer
 ```
 $ poetry run pytest
 ```
+
+##  Provision a VM from an Ansible Control Node
+- Create folder `opt` in the home directory
+- Create folder `todoapp` in the `opt` folder
+- Install `git` using `sudo yum install git`
+- Clone the app repository in `~/opt/todoapp/`
+- Checkout branch `Exercise-4` with `git checkout Exercise-4`
+- Run the ansible playbook by using `ansible-playbook playbook -i ansible_inv`

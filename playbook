@@ -1,0 +1,65 @@
+---
+- name: Install To Do app on server
+  hosts: managed
+  remote_user: ec2-user
+  vars_prompt:
+
+  - name: trello_key
+    prompt: Trello key
+    private: false
+
+  - name: trello_token
+    prompt: Trello token
+    private: false
+
+  tasks:
+  - name: Install Git
+    become: yes
+    ansible.builtin.yum:
+      name: git
+      state: present
+  
+  - name: Install Python
+    become: yes
+    ansible.builtin.yum:
+      name: python3
+      state: present
+
+  - name: Install Poetry
+    ansible.builtin.shell:
+      cmd: curl -sSL https://install.python-poetry.org | python3
+      creates: ~/.local/bin/poetry
+
+  - name: Create To-Do App directory
+    ansible.builtin.shell:
+      cmd: mkdir -p ~/opt/todoapp
+      creates: ~/opt/todoapp
+
+  - name: Clone To-Do App repo
+    ansible.builtin.git:
+      repo: 'https://github.com/cristi-neagu/DevOps-Course-Starter.git'
+      dest: ~/opt/todoapp
+      version: Exercise-4
+
+  - name: Install dependencies
+    ansible.builtin.shell:
+      cmd: ~/.local/bin/poetry install
+      chdir: ~/opt/todoapp
+
+  - name: Create env file
+    ansible.builtin.template:
+      src: ~/opt/todoapp/DevOps-Course-Starter/.env.j2
+      dest: ~/opt/todoapp/.env
+
+  - name: Copy app service to systemd
+    become: yes
+    ansible.builtin.copy:
+      src: ~/opt/todoapp/DevOps-Course-Starter/todoapp.service
+      dest: /etc/systemd/system/todoapp.service
+
+  - name: Start the todoapp service
+    become: yes
+    ansible.builtin.systemd_service:
+      name: todoapp.service
+      daemon_reload: true
+      state: restarted
