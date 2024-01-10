@@ -72,3 +72,22 @@ $ poetry run pytest
 - Clone the app repository in `~/opt/todoapp/`
 - Checkout branch `Exercise-4` with `git checkout Exercise-4`
 - Run the ansible playbook by using `ansible-playbook playbook -i ansible_inv`
+
+## Using Docker
+There are two container variants:
+- A development variant using Flask
+- A production variant using Gunicorn
+
+Commands needed to build each variant:\
+`docker build --target production --tag todo-app:prod .`\
+`docker build --target development --tag todo-app:dev .`
+
+Commands needed to run each variant:\
+`docker run --env-file .env -p 8000:8000 todo-app:prod`\
+`docker run --env-file .env -p 5000:5000 todo-app:dev`
+
+Alternatively, for development purposes a mount bind can be set up for the `todo_app` folder using this command:\
+`docker run --env-file .env -p 5000:5000 --mount type=bind,source=\"$(pwd)\"/todo_app,target=/app/todo_app todo-app:dev`\
+This allows Flask to hot load source files as they're being edited.
+
+Finally, all these commands have been saved as tasks for VSCode and can be accessed from the Terminal menu.
