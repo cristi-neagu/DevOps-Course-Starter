@@ -1,0 +1,35 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "1.0.0",
+    "tasks": [
+        {
+            "label": "echo",
+            "type": "shell",
+            "command": "echo Hello"
+        },
+        {
+            "label": "Build production",
+            "type": "shell",
+            "command": "docker build --target production --tag todo-app:prod ."
+        },
+        {
+            "label": "Build development",
+            "type": "shell",
+            "command": "docker build --target development --tag todo-app:dev .",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run production (gunicorn)",
+            "type": "shell",
+            "command": "docker run --env-file .env -p 8000:8000 todo-app:prod",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run development (flask)",
+            "type": "shell",
+            "command": "docker run --env-file .env -p 5000:5000 --mount type=bind,source=\"$(pwd)\"/todo_app,target=/app/todo_app todo-app:dev",
+            "problemMatcher": []
+        }
+    ]
+}
